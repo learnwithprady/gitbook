@@ -5,10 +5,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { useAuth0 } from "../react-auth0-wrapper";
 import Avatar from '@material-ui/core/Avatar';
@@ -115,7 +113,8 @@ const NavBar = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem><Link to="/profile">Profile</Link></MenuItem>
+      <MenuItem onClick={handleMenuClose}><Link to="/">Home</Link></MenuItem>
+      <MenuItem onClick={handleMenuClose}><Link to="/profile">Profile</Link></MenuItem>
       <MenuItem onClick={() => logout()}>Logout</MenuItem>
     </Menu>
   );
@@ -131,16 +130,9 @@ const NavBar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      <MenuItem onClick={handleMenuClose}><Link to="/">Home</Link></MenuItem>
+      <MenuItem onClick={handleMenuClose}><Link to="/profile">Profile</Link></MenuItem>
+      <MenuItem onClick={() => logout()}>Logout</MenuItem>
     </Menu>
   );
 
@@ -157,23 +149,12 @@ const NavBar = () => {
           >
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Gitbook
+            <Link to="/">Gitbook</Link>
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
+          <div className={classes.sectionDesktop}></div>
+          <div>Welcome, {user && user.nickname}</div>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -185,9 +166,10 @@ const NavBar = () => {
               {user && user.picture && <Grid container justify="center" alignItems="center">
                 <Avatar alt={user.nickname} src={user.picture} className={classes.avatar} />
               </Grid>}
+              {/* Showing avatar if  prof pic aint present*/}
               {user && !user.picture && <AccountCircle />}
             </IconButton>
-          </div>
+        
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"

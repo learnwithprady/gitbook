@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
-import FileContents from "../_components/FileContents";
+import MakeRepoCard from "./MakeRepoCard";
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    padding: '1% 8%',
+  }
+}));
 
 const RepositoriesList = (props) => {
+  const classes = useStyles();
   const [repositoryList, setRepositoryList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const url = `https://api.github.com/users/${props.username}/repos`;
@@ -19,23 +29,14 @@ const RepositoriesList = (props) => {
   },[url]);
 
   return (
-    <div>
+    <div className={classes.container}>
       <h1> Showing all repositories </h1>
-      {isLoading && <p>Loading... Please wait</p>}
-
-      {repositoryList.length && repositoryList.map((repository, index) => (
-        <div key={index}>
-          {repository.name && (
-            <section>
-              <div>
-                <h3>{repository.name}</h3>
-                <FileContents username={props.username} repoName={repository.name}></FileContents>
-              </div>
-              <hr />
-            </section>
-          )}
-        </div>
-      ))}
+      {isLoading &&  <CircularProgress />}
+      <Grid container>
+        {repositoryList.length && repositoryList.map((repository, index) => (
+          <MakeRepoCard key={index} repository={repository}></MakeRepoCard>
+        ))}
+      </Grid>
     </div>
   );
 }
